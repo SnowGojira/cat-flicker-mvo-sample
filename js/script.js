@@ -80,9 +80,42 @@ $(function(){
         }
     };
 
+    let adminView = {
+        init:function(){
+            $inputName = $("#input-name");
+            $inputClicker = $("#input-clicker");
+            $buttonSave = $("#save");
+            $buttonCancel = $("#cancel");
+
+            let cat = octopus.getCurrentCat();
+            $inputName.val(cat.name);
+            $inputClicker.val(cat.clicker);
+
+            $buttonCancel.click(function(e){
+                $inputName.val(cat.name);
+                $inputClicker.val(cat.clicker);
+            })
+
+            $buttonSave.click(function (e) {
+
+                cat.name = $inputName.val();
+                cat.clicker = $inputClicker.val();
+
+                octopus.adminUpdate(cat);
+                console.log(octopus.getAllCats());
+                //todo submit and vanish the view
+            });
+
+        }
+    }
+
     let octopus = {
         getAllCats:function(){
             return model.data;
+        },
+        adminUpdate: function(cat){
+            this.setCurrentCat(cat);
+            ImageView.render();
         },
         addClicker:function(){
              ++model.currentCat.clicker;
@@ -98,6 +131,7 @@ $(function(){
             this.setCurrentCat(model.data[0]);
             ListView.init();
             ImageView.init();
+            adminView.init();
         }
     };
 
