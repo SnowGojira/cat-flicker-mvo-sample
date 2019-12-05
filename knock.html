@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat Flicker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+   <div class = container >
+       <ul class="list-container" data-bind="foreach: catList">
+           <li data-bind="text: name, click: $parent.selectCat"></li>
+       </ul>
+       <div class="content-container" data-bind="with:currentCat">
+           <h2><span data-bind="text: name"></span> is <span data-bind="text: age"></span>:<span data-bind="text:clicker "></span></h2>
+           <img class="cat-image" alt="cat" src="" data-bind="attr:{src:src}, click: $parent.addClicker"/>
+           <button id="admin">admin</button>
+           <div class = "admin-container">
+               name<input id="input-name">
+               clicker<input id="input-clicker">
+               <button id="save">save</button>
+               <button id="cancel">cancel</button>
+           </div>
+       </div>
+   </div>
+
+
+    <script src="js/libs/jquery.min.js"></script>
+<!--    <script src="js/libs/knockout-3.2.0.js"></script>-->
+    <script src="js/libs/knockout-3.5.1.js"></script>
+    <script src="js/knockCat.js"></script>
+</body>
+</html>
