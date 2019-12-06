@@ -50,51 +50,54 @@ $(function(){
     };
     let AdminView = {
         init:function(){
-            $inputName = $("#input-name");
-            $inputClicker = $("#input-clicker");
-            $buttonSave = $("#save");
-            $buttonCancel = $("#cancel");
-            $buttonAdmin = $("#admin");
+            this.$buttonSave = $("#save");
+            this.$buttonCancel = $("#cancel");
+            this.$buttonAdmin = $("#admin");
+            this.$adminContainer = $(".admin-container");
 
             this.render();
         },
         render:function(){
-            let cat = octopus.getCurrentCat();
+            let cat;
+            let $inputName = $("#input-name");
+            let $inputClicker = $("#input-clicker");
 
-            //admin view functions
-            console.log("cats",octopus.getAllCats());
-
-            $buttonAdmin.click(function (e) {
+            this.$buttonAdmin.click(function (e) {
+                cat = octopus.getCurrentCat();
                 octopus.toggleAdmin();
+
+                $inputName.val(cat.name);
+                $inputClicker.val(cat.clicker);
             });
 
-            $buttonCancel.click(function(e){
+            this.$buttonCancel.click(function(e){
                 octopus.setAdminLabel(true);
                 octopus.toggleAdmin();
             });
 
             //todo always have been more extra times
-            $buttonSave.click(function (e) {
+            this.$buttonSave.click(function (e) {
+                
+                cat.name = $inputName.val();
+                cat.clicker =$inputClicker.val();
 
-                let inputName = $inputName.val(),
-                    inputClicker = $inputClicker.val();
-
-                cat.name = inputName;
-                cat.clicker = inputClicker;
+                console.log("cat",cat);
 
                 octopus.setCurrentCat(cat);
-                console.log("cat_item",octopus.getAllCats());
-                
+                console.log("later cats",octopus.getAllCats());
+                ImageView.render();
+                //console.log("cat_item",octopus.getAllCats());
+
                 octopus.setAdminLabel(true);
                 octopus.toggleAdmin();
             });
         },
         toggle:function (label) {
-            $adminContainer = $(".admin-container");
+
             if(label){
-                $adminContainer.addClass('none');
+                this.$adminContainer.addClass('none');
             }else{
-                $adminContainer.removeClass('none');
+                this.$adminContainer.removeClass('none');
             }
         }
     };
@@ -116,8 +119,13 @@ $(function(){
                 elem.addEventListener("click",(function (cat) {
                     return function () {
                         octopus.setCurrentCat(cat);
+                        //toggle admin
+                        octopus.setAdminLabel(true);
+                        octopus.toggleAdmin();
+
                         ImageView.render();
-                        AdminView.render();
+
+
                     }
 
                 })(cats[i]));
