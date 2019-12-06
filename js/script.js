@@ -1,4 +1,3 @@
-
 $(function(){
     let model = {
         currentCat:null,
@@ -48,6 +47,7 @@ $(function(){
             this.$catName.text(cat.name);
         }
     };
+
     let AdminView = {
         init:function(){
             this.$buttonSave = $("#save");
@@ -57,6 +57,7 @@ $(function(){
 
             this.render();
         },
+
         render:function(){
             let cat;
             let $inputName = $("#input-name");
@@ -75,18 +76,14 @@ $(function(){
                 octopus.toggleAdmin();
             });
 
-            //todo always have been more extra times
             this.$buttonSave.click(function (e) {
-                
+
                 cat.name = $inputName.val();
                 cat.clicker =$inputClicker.val();
 
-                console.log("cat",cat);
-
                 octopus.setCurrentCat(cat);
-                console.log("later cats",octopus.getAllCats());
                 ImageView.render();
-                //console.log("cat_item",octopus.getAllCats());
+                ListView.render();
 
                 octopus.setAdminLabel(true);
                 octopus.toggleAdmin();
@@ -124,8 +121,6 @@ $(function(){
                         octopus.toggleAdmin();
 
                         ImageView.render();
-
-
                     }
 
                 })(cats[i]));
@@ -142,13 +137,6 @@ $(function(){
         getAllCats:function(){
             return model.data;
         },
-
-        adminUpdate: function(cat){
-            this.setCurrentCat(cat);
-            ImageView.render();
-            ListView.render();
-        },
-
         addClicker:function(){
              model.currentCat.clicker++;
              ImageView.render();
@@ -159,7 +147,6 @@ $(function(){
         setCurrentCat:function(cat){
             model.currentCat = cat;
         },
-
         toggleAdmin:function(){
             if(!model.adminVisibility){
                 AdminView.toggle(model.adminVisibility);
