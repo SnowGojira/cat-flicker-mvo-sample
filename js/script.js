@@ -2,6 +2,7 @@
 $(function(){
     let model = {
         currentCat:null,
+        adminVisibility: false,
         data:[
             {   name: "Mimi",
                 src:"image/mimi.jpg",
@@ -48,33 +49,33 @@ $(function(){
         }
     };
     let AdminView = {
-        render:function(){
-            let cat = octopus.getCurrentCat();
-
+        init:function(){
             $inputName = $("#input-name");
             $inputClicker = $("#input-clicker");
             $buttonSave = $("#save");
             $buttonCancel = $("#cancel");
             $buttonAdmin = $("#admin");
 
+            this.render();
+        },
+        render:function(){
+            let cat = octopus.getCurrentCat();
+
             //admin view functions
             console.log("cats",octopus.getAllCats());
 
+            $buttonAdmin.click(function (e) {
+                octopus.toggleAdmin();
+            });
 
-            // $buttonAdmin.click(function (e) {
-            //     $inputName.val(cat.name);
-            //     $inputClicker.val(cat.clicker);
-            //
-            //     //octopus.toggleAdmin(true);
-            //     console.log("hhhhh");
-            // });
-
-            // $buttonCancel.click(function(e){
-            //     octopus.toggleAdmin(false);
-            // });
+            $buttonCancel.click(function(e){
+                octopus.setAdminLabel(true);
+                octopus.toggleAdmin();
+            });
 
             //todo always have been more extra times
             $buttonSave.click(function (e) {
+
                 let inputName = $inputName.val(),
                     inputClicker = $inputClicker.val();
 
@@ -83,7 +84,18 @@ $(function(){
 
                 octopus.setCurrentCat(cat);
                 console.log("cat_item",octopus.getAllCats());
+                
+                octopus.setAdminLabel(true);
+                octopus.toggleAdmin();
             });
+        },
+        toggle:function (label) {
+            $adminContainer = $(".admin-container");
+            if(label){
+                $adminContainer.addClass('none');
+            }else{
+                $adminContainer.removeClass('none');
+            }
         }
     };
 
@@ -140,20 +152,23 @@ $(function(){
             model.currentCat = cat;
         },
 
-        // toggleAdmin:function(isAdmin){
-        //
-        //     if(isAdmin){
-        //         $(".admin-container").show();
-        //         //adminView.init();
-        //     }else {
-        //         $(".admin-container").hide();
-        //     }
-        //     $("#admin").attr("disabled",isAdmin);
-        // },
+        toggleAdmin:function(){
+            if(!model.adminVisibility){
+                AdminView.toggle(model.adminVisibility);
+                return model.adminVisibility = true;
+            }else{
+                AdminView.toggle(model.adminVisibility);
+                return model.adminVisibility = false;
+            }
+        },
+        setAdminLabel:function(label){
+            model.adminVisibility = label;
+        },
         init:function () {
             model.currentCat=model.data[0];
             ListView.init();
             ImageView.init();
+            AdminView.init();
 
         }
     };
